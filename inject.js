@@ -14,7 +14,21 @@
   realVideo.playsInline = true;
   realVideo.muted = true;
   realVideo.style.display = 'none';
-  document.body.appendChild(realVideo);
+
+  // Safely attach video element when DOM is ready or to documentElement
+  function appendElementSafely(el) {
+    if (document.body) {
+      document.body.appendChild(el);
+    } else if (document.documentElement) {
+      document.documentElement.appendChild(el);
+    } else {
+      document.addEventListener('DOMContentLoaded', () => {
+        (document.body || document.documentElement).appendChild(el);
+      });
+    }
+  }
+
+  appendElementSafely(realVideo);
 
   let canvas = document.createElement('canvas');
   let ctx = canvas.getContext('2d', { willReadFrequently: true });
@@ -57,7 +71,7 @@
     script.onerror = () => {
       console.warn('[Thanos FX] MediaPipe script load failed. Falling back to built-in background-difference segmentation.');
     };
-    document.head.appendChild(script);
+    (document.head || document.documentElement).appendChild(script);
   }
 
   function initSegmentation() {
@@ -450,7 +464,7 @@
       }
     });
 
-    document.body.appendChild(badge);
+    appendElementSafely(badge);
   }
 
   if (document.readyState === 'loading') {
