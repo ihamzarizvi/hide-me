@@ -1,0 +1,51 @@
+{
+  "manifest_version": 3,
+  "name": "Google Meet Thanos Disintegration Exit",
+  "version": "1.0.0",
+  "description": "Thanos Snap disintegration effect for your webcam video feed on Google Meet and video calling platforms.",
+  "permissions": [
+    "storage",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "https://meet.google.com/*",
+    "https://*.google.com/*",
+    "http://localhost/*",
+    "http://127.0.0.1/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://meet.google.com/*",
+        "https://*.google.com/*",
+        "http://localhost/*",
+        "http://127.0.0.1/*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_start",
+      "all_frames": true
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["inject.js", "lib/*", "assets/*"],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Thanos Disintegration FX"
+  },
+  "commands": {
+    "toggle-disintegration": {
+      "suggested_key": {
+        "default": "Alt+S",
+        "mac": "Command+Shift+D"
+      },
+      "description": "Toggle Disintegration Effect"
+    }
+  }
+}

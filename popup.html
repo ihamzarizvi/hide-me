@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Thanos Disintegration FX</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <span class="icon">✨</span>
+      <h2>Thanos Exit FX</h2>
+    </div>
+
+    <div class="status-card" id="statusCard">
+      <div class="status-label">Effect Status</div>
+      <div class="status-value" id="statusValue">Normal Stream</div>
+    </div>
+
+    <button id="toggleBtn" class="action-btn">
+      Snap Disintegrate (Alt + S)
+    </button>
+
+    <div class="controls">
+      <label>
+        Particle Size
+        <input type="range" id="particleSize" min="2" max="6" value="3">
+      </label>
+      <label>
+        Duration (s)
+        <input type="range" id="duration" min="1.0" max="3.0" step="0.2" value="1.8">
+      </label>
+    </div>
+
+    <div class="footer">
+      <span>Target: Google Meet / WebRTC</span>
+    </div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
