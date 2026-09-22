@@ -1,23 +1,9 @@
-// content.js - Content script to bridge Chrome Extension & Page Execution Context
+// content.js - Content script bridge for extension state sync
 
 (function () {
-  console.log('[Thanos FX] Content script initializing...');
+  console.log('[Thanos FX] Content script initialized in isolated world.');
 
-  // Inject main world script (inject.js) into Google Meet context
-  function injectMainWorldScript() {
-    const script = document.createElement('script');
-    script.src = chrome.runtime.getURL('inject.js');
-    script.type = 'text/javascript';
-    script.onload = function () {
-      console.log('[Thanos FX] inject.js successfully loaded in main world.');
-      this.remove();
-    };
-    (document.head || document.documentElement).appendChild(script);
-  }
-
-  injectMainWorldScript();
-
-  // Listen for extension commands (e.g., keyboard shortcuts, popup toggles)
+  // Listen for messages from background script / extension popup
   chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.type === 'TOGGLE_DISINTEGRATION' || message.type === 'UPDATE_SETTINGS') {
       window.postMessage({ source: 'THANOS_EXTENSION', ...message }, '*');
@@ -25,7 +11,7 @@
     }
   });
 
-  // Listen for messages from inject.js to sync state back to extension storage
+  // Relay state changes from inject.js to chrome.storage
   window.addEventListener('message', (event) => {
     if (event.source !== window || !event.data || event.data.source !== 'THANOS_INJECT') return;
 

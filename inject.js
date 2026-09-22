@@ -1,4 +1,4 @@
-// inject.js - Runs in Main Page World (Google Meet context)
+// inject.js - Runs natively in Main Page World (Google Meet context)
 
 (function () {
   console.log('[Thanos FX Engine] Main world injection initializing...');
@@ -15,16 +15,22 @@
   realVideo.muted = true;
   realVideo.style.display = 'none';
 
-  // Safely attach video element when DOM is ready or to documentElement
+  // Safely attach video element when DOM body/documentElement exists
   function appendElementSafely(el) {
-    if (document.body) {
-      document.body.appendChild(el);
-    } else if (document.documentElement) {
-      document.documentElement.appendChild(el);
-    } else {
-      document.addEventListener('DOMContentLoaded', () => {
-        (document.body || document.documentElement).appendChild(el);
-      });
+    try {
+      if (document.body) {
+        document.body.appendChild(el);
+      } else if (document.documentElement) {
+        document.documentElement.appendChild(el);
+      } else {
+        document.addEventListener('DOMContentLoaded', () => {
+          if (document.body || document.documentElement) {
+            (document.body || document.documentElement).appendChild(el);
+          }
+        });
+      }
+    } catch (err) {
+      console.warn('[Thanos FX] Element attachment deferred:', err);
     }
   }
 
@@ -61,17 +67,21 @@
       initSegmentation();
       return;
     }
-    const script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/selfie_segmentation.js';
-    script.crossOrigin = 'anonymous';
-    script.onload = () => {
-      console.log('[Thanos FX] MediaPipe Selfie Segmentation library loaded.');
-      initSegmentation();
-    };
-    script.onerror = () => {
-      console.warn('[Thanos FX] MediaPipe script load failed. Falling back to built-in background-difference segmentation.');
-    };
-    (document.head || document.documentElement).appendChild(script);
+    try {
+      const script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/selfie_segmentation.js';
+      script.crossOrigin = 'anonymous';
+      script.onload = () => {
+        console.log('[Thanos FX] MediaPipe Selfie Segmentation library loaded.');
+        initSegmentation();
+      };
+      script.onerror = () => {
+        console.warn('[Thanos FX] MediaPipe script load prevented by CSP. Using fast built-in background-difference segmentation.');
+      };
+      appendElementSafely(script);
+    } catch (e) {
+      console.warn('[Thanos FX] Script append restricted by page CSP. Falling back to built-in segmentation engine.');
+    }
   }
 
   function initSegmentation() {
@@ -99,7 +109,7 @@
   // Background Plate Interpolation / Auto Capture
   let frameCount = 0;
   function updateBackgroundPlate(videoEl) {
-    if (videoEl.videoWidth === 0 || videoEl.videoHeight === 0) return;
+    if (!videoEl || videoEl.videoWidth === 0 || videoEl.videoHeight === 0) return;
     if (bgCanvas.width !== videoEl.videoWidth || bgCanvas.height !== videoEl.videoHeight) {
       bgCanvas.width = videoEl.videoWidth;
       bgCanvas.height = videoEl.videoHeight;
@@ -119,7 +129,7 @@
     frameCount++;
   }
 
-  // --- Fallback Person Segmentation (when MediaPipe offline/loading) ---
+  // --- Fallback Person Segmentation (when MediaPipe offline/loading/CSP restricted) ---
   function createFallbackPersonMask(videoEl, width, height) {
     const tempCanvas = document.createElement('canvas');
     tempCanvas.width = width;
