@@ -371,8 +371,14 @@
   });
 
   window.addEventListener('keydown', (e) => {
-    // Alt + S or Cmd + Shift + D
-    if ((e.altKey && e.code === 'KeyS') || (e.metaKey && e.shiftKey && e.code === 'KeyD')) {
+    // Support multiple hotkeys for Mac / Brave compatibility:
+    // Option + S (Alt + KeyS), Cmd + Shift + D, Cmd + Shift + X, or Cmd + Shift + E
+    const isOptionS = e.altKey && e.code === 'KeyS';
+    const isCmdShiftD = e.metaKey && e.shiftKey && e.code === 'KeyD';
+    const isCmdShiftX = e.metaKey && e.shiftKey && e.code === 'KeyX';
+    const isCmdShiftE = e.metaKey && e.shiftKey && e.code === 'KeyE';
+
+    if (isOptionS || isCmdShiftD || isCmdShiftX || isCmdShiftE) {
       e.preventDefault();
       triggerDisintegration(!isDisintegrated);
     }

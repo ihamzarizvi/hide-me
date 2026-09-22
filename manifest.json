@@ -43,7 +43,7 @@
     "toggle-disintegration": {
       "suggested_key": {
         "default": "Alt+S",
-        "mac": "Command+Shift+D"
+        "mac": "Alt+S"
       },
       "description": "Toggle Disintegration Effect"
     }

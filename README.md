@@ -28,7 +28,8 @@ When activated, your webcam feed isolates your person, freezes the foreground, b
 - 👤 **AI Person Segmentation:** Integrated `@mediapipe/selfie_segmentation` with automatic background-difference fallback.
 - 💨 **Dynamic Particle FX:** Simulated 3D noise vector field with customizable voxel particle sizes (2px–6px) and duration curves.
 - ⏪ **Reverse Animation:** Snap again to trigger particle reassembly and return back to your live video stream.
-- ⚡ **Floating Controls & Hotkeys:** Injected floating badge inside Google Meet (`Alt + S` / `Cmd + Shift + D`).
+- ⚡ **Floating Controls & Hotkeys:** Injected floating badge inside Google Meet (`Option + S` / `Cmd + Shift + X` / `Alt + S`).
+- 🦁 **Brave & macOS Compatible:** Configured specially to avoid default Brave Browser shortcut collisions (`Cmd + Shift + D` is reserved in Brave for Bookmark All Tabs).
 - 📦 **Downloadable Zip Package:** Comes pre-packaged with `thanos-disintegration-extension.zip` for instant unpacked installation.
 
 ---
@@ -37,9 +38,13 @@ When activated, your webcam feed isolates your person, freezes the foreground, b
 
 | Trigger Method | Key / Action | Description |
 | :--- | :--- | :--- |
-| **Keyboard Hotkey** | `Alt + S` (Windows/Linux)<br>`Cmd + Shift + D` (macOS) | Toggle disintegration / reassembly immediately |
+| **Primary Mac / Brave Shortcut** | `Option + S` (or `Cmd + Shift + X`) | Toggle disintegration / reassembly on macOS / Brave |
+| **Windows / Linux Shortcut** | `Alt + S` | Toggle disintegration / reassembly on Windows/Linux |
 | **In-Call Badge** | Click **✨ Snap Disintegrate** | Interactive floating badge injected in Google Meet UI |
 | **Popup UI** | Extension Icon -> **Snap Disintegrate** | Extension toolbar popup controls |
+
+> 💡 **Customizing Shortcuts in Brave / Chrome:**
+> Go to `brave://extensions/shortcuts` (or `chrome://extensions/shortcuts`) to bind your own custom hotkey!
 
 ---
 
@@ -48,7 +53,7 @@ When activated, your webcam feed isolates your person, freezes the foreground, b
 ### Option 1: Unpacked Extension Package (`thanos-disintegration-extension.zip`)
 
 1. **Download / Extract:** Unzip `thanos-disintegration-extension.zip` in your preferred directory.
-2. **Chrome Extensions:** Open Chrome and visit `chrome://extensions/`.
+2. **Browser Extensions:** Open Brave or Chrome and visit `brave://extensions/` or `chrome://extensions/`.
 3. **Enable Developer Mode:** Turn on **Developer mode** (top-right toggle switch).
 4. **Load Unpacked:** Click **Load unpacked** and select the unzipped directory containing `manifest.json`.
 
@@ -93,6 +98,11 @@ All 3 test suites passed successfully! 🎉
 ---
 
 ## ❓ Troubleshooting & FAQ
+
+<details>
+<summary><b>Q: Why didn't Cmd + Shift + D work on macOS in Brave Browser?</b></summary>
+<p>Brave Browser reserves <code>Cmd + Shift + D</code> natively for the "Bookmark All Tabs" shortcut. We have configured the extension to use <code>Option + S</code> or <code>Cmd + Shift + X</code> on macOS/Brave, and you can also click the floating <b>✨ Snap Disintegrate</b> badge on screen.</p>
+</details>
 
 <details>
 <summary><b>Q: Does Google Meet detect that the stream is intercepted?</b></summary>
